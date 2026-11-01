@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>10.0</LangVersion>
+    <RootNamespace>FallDamageControl</RootNamespace>
+    <AssemblyName>FallDamageControl</AssemblyName>
+
+    <Version>0.0.4</Version>
+    <Title>Valheim Fall Damage Control</Title>
+    <Authors>EwigLicht</Authors>
+    <Description>Applies Fall damage to all creatures in Valheim.</Description>
+    <Copyright>Copyright © 2026 EwigLicht. All rights reserved.</Copyright>
+
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AllowedReferenceRelatedFileExtensions>none</AllowedReferenceRelatedFileExtensions>
+
+    <GameInstallPath>E:\Games\Steam\steamapps\common\Valheim\</GameInstallPath>
+    <ModInstallPath>$(GameInstallPath)\BepInEx\plugins\</ModInstallPath>
+    <PackageInstallPath>$(MSBuildProjectDirectory)\package\BepInEx\plugins\</PackageInstallPath>
+
+
+    <NoWarn>$(NoWarn);MSB3245</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JotunnLib" Version="2.30.2" />
+
+    <Reference Include="assembly_valheim">
+      <HintPath>$(GameInstallPath)\valheim_Data\Managed\assembly_valheim.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="assembly_utils">
+      <HintPath>$(GameInstallPath)\valheim_Data\Managed\assembly_utils.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="CleanExtraDLLs" AfterTargets="Build">
+    <ItemGroup>
+      <ExtraDlls Include="$(TargetDir)*.dll" Exclude="$(TargetDir)$(AssemblyName).dll" />
+    </ItemGroup>
+    <Delete Files="@(ExtraDlls)" />
+  </Target>
+
+  <Target Name="CopyToPlugins" AfterTargets="CleanExtraDLLs">
+    <MakeDir Directories="$(ModInstallPath);$(PackageInstallPath)" />
+    <Copy SourceFiles="$(TargetDir)$(TargetFileName)" DestinationFolder="$(ModInstallPath)"
+      SkipUnchangedFiles="true" />
+    <Copy SourceFiles="$(TargetDir)$(TargetFileName)" DestinationFolder="$(PackageInstallPath)"
+      SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>
