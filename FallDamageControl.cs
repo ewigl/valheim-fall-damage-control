@@ -10,7 +10,7 @@ internal sealed class FallDamageControl : BaseUnityPlugin
 {
     public const string PluginGUID = "ewigl.FallDamageControl";
     public const string PluginName = "Fall Damage Control";
-    public const string PluginVersion = "0.0.6";
+    public const string PluginVersion = "1.0.0";
 
     private Harmony _harmony;
 
